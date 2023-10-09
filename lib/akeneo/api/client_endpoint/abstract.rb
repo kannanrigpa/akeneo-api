@@ -37,7 +37,7 @@ module Akeneo::Api::ClientEndpoint
       query['authorization'] = 'Bearer ' + @_client.access_token
       query.body = JSON.generate(body)
 
-      res = Net::HTTP.start(call_uri.hostname, call_uri.port, use_ssl: @uri.include?('https')) do |http|
+      res = Net::HTTP.start(call_uri.hostname, call_uri.port, use_ssl: true) do |http|
         http.request(query)
       end
 

@@ -36,7 +36,7 @@ module Akeneo::Api
         password: password
         })
 
-      res = Net::HTTP.start(token_uri.hostname, token_uri.port, use_ssl: @uri.include?('https')) do |http|
+      res = Net::HTTP.start(token_uri.hostname, token_uri.port, use_ssl: true) do |http|
         http.request(query)
       end
 
