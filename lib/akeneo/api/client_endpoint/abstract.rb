@@ -37,7 +37,7 @@ module Akeneo::Api::ClientEndpoint
       query['authorization'] = 'Bearer ' + @_client.access_token
       query.body = JSON.generate(body)
 
-      res = Net::HTTP.start(call_uri.hostname, call_uri.port) do |http|
+      res = Net::HTTP.start(call_uri.hostname, call_uri.port, use_ssl: @uri.include?('https')) do |http|
         http.request(query)
       end
 
@@ -141,7 +141,7 @@ module Akeneo::Api::ClientEndpoint
       each do |entity|
         return entity if yield(entity)
       end
-      
+
       return nil
     end
 
@@ -152,7 +152,7 @@ module Akeneo::Api::ClientEndpoint
     def map
       results = all
 
-      return results.map do |entity| 
+      return results.map do |entity|
         yield(entity)
       end
     end
@@ -167,7 +167,7 @@ module Akeneo::Api::ClientEndpoint
         )
 
       continue = true
-      while (continue) 
+      while (continue)
         result += response['_embedded']['items'].count
 
         next_page_uri = response['_links']['next'].try(:[], 'href')
@@ -197,4 +197,4 @@ module Akeneo::Api::ClientEndpoint
       return first.nil?
     end
   end
-end  
+end
